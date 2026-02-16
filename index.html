@@ -827,6 +827,15 @@ trails.forEach(trail => {
 
   if (isTouch) {
     w.addEventListener('click', () => {
+      // Close any other open cards first
+      document.querySelectorAll('.flip-card.flipped').forEach(fc => {
+        if (fc !== w.querySelector('.flip-card')) fc.classList.remove('flipped');
+      });
+      w.querySelector('.flip-card').classList.toggle('flipped');
+    });
+  } else {
+    // Desktop: also allow click to lock the flip
+    w.addEventListener('click', () => {
       w.querySelector('.flip-card').classList.toggle('flipped');
     });
   }
