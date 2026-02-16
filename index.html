@@ -389,7 +389,6 @@
     border-radius: var(--radius);
   }
 
-  .flip-wrapper:hover .flip-card,
   .flip-card.flipped {
     transform: rotateY(180deg);
   }
@@ -412,7 +411,7 @@
     transition: transform 0.6s var(--ease);
   }
 
-  .flip-wrapper:hover .flip-front img { transform: scale(1.05); }
+  .flip-wrapper:hover .flip-front img { transform: scale(1.02); }
 
   .flip-front::after {
     content: '';
@@ -622,8 +621,6 @@
     .photo-card:hover img { transform: none; }
     .photo-card:active { transform: scale(0.98); }
     .photo-card:hover .photo-card-cta { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.12); gap: 8px; }
-    .flip-wrapper:hover .flip-card { transform: none; }
-    .flip-card.flipped { transform: rotateY(180deg); }
     .flip-wrapper:hover .flip-front img { transform: none; }
     .modal-close:hover { transform: none; }
     .modal-close { width: 48px; height: 48px; }
@@ -809,7 +806,7 @@ trails.forEach(trail => {
           <h3 class="flip-front-name">${trail.name}</h3>
           <div class="flip-front-meta">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            ${trail.distance} · ${isTouch ? 'Tap' : 'Hover'} to flip
+            ${trail.distance} · Tap to flip
           </div>
         </div>
       </div>
@@ -825,20 +822,15 @@ trails.forEach(trail => {
     </div>
   `;
 
-  if (isTouch) {
-    w.addEventListener('click', () => {
-      // Close any other open cards first
-      document.querySelectorAll('.flip-card.flipped').forEach(fc => {
-        if (fc !== w.querySelector('.flip-card')) fc.classList.remove('flipped');
-      });
-      w.querySelector('.flip-card').classList.toggle('flipped');
+  // Click to flip on all devices
+  w.addEventListener('click', () => {
+    const fc = w.querySelector('.flip-card');
+    // Close other open cards
+    document.querySelectorAll('.flip-card.flipped').forEach(other => {
+      if (other !== fc) other.classList.remove('flipped');
     });
-  } else {
-    // Desktop: also allow click to lock the flip
-    w.addEventListener('click', () => {
-      w.querySelector('.flip-card').classList.toggle('flipped');
-    });
-  }
+    fc.classList.toggle('flipped');
+  });
 
   grid.appendChild(w);
 });
